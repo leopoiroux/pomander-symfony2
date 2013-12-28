@@ -1,0 +1,23 @@
+{
+	"name": "pomander/symfony2",
+	"type": "library",
+	"description": "Pomander plugin to deploy and manage Symfony2 sites",
+	"keywords": ["deploy","git","svn","symfony2","pomander"],
+	"homepage": "http://github.com/leopoiroux/pomander-symfony2",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Léo POIROUX",
+			"email": "leo.poiroux@gmail.com"
+		}
+	],
+	"minimum-stability": "stable",
+	"require": {
+		"pomander/pomander": "*"
+	},
+	"autoload": {
+		"psr-0": {
+			"Pomander\\Symfony2": "lib"
+		}
+	}
+}
