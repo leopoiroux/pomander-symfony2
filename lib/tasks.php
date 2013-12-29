@@ -28,26 +28,18 @@ group('symfony2',function () {
         run($cmd);
     });
 
-    desc("Run Composer: install");
-    task('install', function ($app) {
+    task('parameters', function ($app) {
 
-        // Test if composer exists
-        $composer_exists = run("if which composer; then echo \"ok\"; fi", true);
-        if(!empty($composer_exists)) $composer = 'composer';
-        else if (file_exists($app->env->releases_dir . '/composer.phar')) $composer = 'php composer.phar';
-        else return abort("symfony2:install", "Install \"Composer\" the Dependency Manager for PHP");
+        if (!file_exists($app->env->releases_dir . '/app/config/parameters.yml.dist')) abort("symfony2:parameters", "Symfony2 not exists on application");
 
-        info("symfony2:install","composer install");
-        $cmd = array(
-            "cd {$app->env->releases_dir}",
-            "{$composer} install -n"
-        );
+        info("symfony2:parameters","");
+        $parameters = \Spyc::YAMLDump(array('parameters' => $app->env->symfony2["parameters"]),4,60);
+        file_put_contents($app->env->releases_dir . '/app/config/parameters.yml.dist', $parameters);
 
-        run($cmd);
     });
 
     desc("Run Composer: update");
-    task('update', function ($app) {
+    task('composer', 'parameters', function ($app) {
 
         // Test if composer exists
         $composer_exists = run("if which composer; then echo \"ok\"; fi", true);
@@ -55,7 +47,7 @@ group('symfony2',function () {
         else if (file_exists($app->env->releases_dir . '/composer.phar')) $composer = 'php composer.phar';
         else return abort("symfony2:install", "Install \"Composer\" the Dependency Manager for PHP");
 
-        info("symfony2:update","composer update");
+        info("symfony2:composer","composer update");
         $cmd = array(
             "cd {$app->env->releases_dir}",
             "{$composer} update -n"
@@ -65,5 +57,5 @@ group('symfony2',function () {
     });
 
     desc("Installation of Symfony2 in environment.");
-    task('setup', 'deploy:setup', 'symfony2:download', 'symfony2:install');
+    task('setup', 'deploy:setup', 'symfony2:download', 'symfony2:parameters', 'symfony2:composer');
 });

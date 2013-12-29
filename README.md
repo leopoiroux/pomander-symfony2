@@ -32,8 +32,23 @@ $ vendor/bin/pom init
 
 $env->load('Symfony2');
 
-$env->symfony2(array(
+$env->symfony2(
+    array(
     'version' => '2.4.0',
+    'parameters' => array(
+        'database_driver' => 'pdo_mysql',
+        'database_host' => '127.0.0.1',
+        'database_port' => '~',
+        'database_name' => 'symfony',
+        'database_user' => 'root',
+        'database_password' => '~',
+        'mailer_transport' => 'smtp',
+        'mailer_host' => '127.0.0.1',
+        'mailer_user' => '~',
+        'mailer_password' => '~',
+        'locale' => 'en',
+        'secret' => 'helloworld'
+    )
 ));
 
 $env->repository('set your repository location here')
