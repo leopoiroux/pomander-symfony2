@@ -22,13 +22,27 @@ Getting Started
 ---------------
 
 ```bash
-$ pom init
+$ vendor/bin/pom init
 ```
 
-Modify your development.yml or development.php
+##### Modify your development.yml or development.php
+
+```
+<?php
+
+$env->load('Symfony2');
+
+$env->symfony2(array(
+    'version' => '2.4.0',
+));
+
+$env->repository('set your repository location here')
+    ->deploy_to('set your application location on server')
+;
+```
 
 ```bash
-$ pom setup
+$ vendor/bin/pom symfony2:setup
 ```
 
 Done!
