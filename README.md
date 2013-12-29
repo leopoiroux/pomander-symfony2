@@ -1,4 +1,4 @@
-pomander-symfony2 - Symfony2 tasks for Pomander
+Symfony2 tasks for use with Pomander
 =================================================
 
 This is a plugin to help fully manage your Symfony2 projects

@@ -2,12 +2,11 @@
 
 group('symfony2',function () {
 
-    desc("Setup Symfony2 in environment.");
-    task('setup', 'deploy:setup', function ($app) {
+    task('download', function ($app) {
 
         // This task should only be played in development
         if ($app->env->name != "development") {
-            return abort("symfony2:setup","This task should only be played in development");
+            return abort("symfony2:download","This task should only be played in development");
         }
 
         // Download Symfony2 Standard Edition
@@ -19,11 +18,52 @@ group('symfony2',function () {
             $version = $app->env->symfony2["version"];
         }
 
-        info("symfony2:setup","Download Symfony2 Standard Edition : {$version}");
-        $cmd[] = "curl -sL https://github.com/symfony/symfony-standard/archive/{$version}.tar.gz > {$app->env->release_dir}/symfony2.tar";
-        $cmd[] = "tar --strip-components=1 -xzf {$app->env->release_dir}/symfony2.tar -C {$app->env->release_dir}";
-        $cmd[] = "rm -f {$app->env->release_dir}/symfony2.tar";
+        info("symfony2:download","Download Symfony2 Standard Edition : {$version}");
+        $cmd = array(
+            "curl -sL https://github.com/symfony/symfony-standard/archive/{$version}.tar.gz > {$app->env->releases_dir}/symfony2.tar",
+            "tar --strip-components=1 -xzf {$app->env->releases_dir}/symfony2.tar -C {$app->env->releases_dir}",
+            "rm -f {$app->env->releases_dir}/symfony2.tar"
+        );
 
         run($cmd);
     });
+
+    desc("Run Composer: install");
+    task('install', function ($app) {
+
+        // Test if composer exists
+        $composer_exists = run("if which composer; then echo \"ok\"; fi", true);
+        if(!empty($composer_exists)) $composer = 'composer';
+        else if (file_exists($app->env->releases_dir . '/composer.phar')) $composer = 'php composer.phar';
+        else return abort("symfony2:install", "Install \"Composer\" the Dependency Manager for PHP");
+
+        info("symfony2:install","composer install");
+        $cmd = array(
+            "cd {$app->env->releases_dir}",
+            "{$composer} install -n"
+        );
+
+        run($cmd);
+    });
+
+    desc("Run Composer: update");
+    task('update', function ($app) {
+
+        // Test if composer exists
+        $composer_exists = run("if which composer; then echo \"ok\"; fi", true);
+        if(!empty($composer_exists)) $composer = 'composer';
+        else if (file_exists($app->env->releases_dir . '/composer.phar')) $composer = 'php composer.phar';
+        else return abort("symfony2:install", "Install \"Composer\" the Dependency Manager for PHP");
+
+        info("symfony2:update","composer update");
+        $cmd = array(
+            "cd {$app->env->releases_dir}",
+            "{$composer} update -n"
+        );
+
+        run($cmd);
+    });
+
+    desc("Installation of Symfony2 in environment.");
+    task('setup', 'deploy:setup', 'symfony2:download', 'symfony2:install');
 });
