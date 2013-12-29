@@ -32,8 +32,7 @@ $ vendor/bin/pom init
 
 $env->load('Symfony2');
 
-$env->symfony2(
-    array(
+$env->symfony2(array(
     'version' => '2.4.0',
     'parameters' => array(
         'database_driver' => 'pdo_mysql',
@@ -47,7 +46,7 @@ $env->symfony2(
         'mailer_user' => '~',
         'mailer_password' => '~',
         'locale' => 'en',
-        'secret' => 'helloworld'
+        'secret' => 'ThisTokenIsNotSoSecretChangeIt'
     )
 ));
 
