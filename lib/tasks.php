@@ -30,15 +30,18 @@ group('symfony2',function () {
 
     task('parameters', function ($app) {
 
-        if (!file_exists($app->env->releases_dir . '/app/config/parameters.yml.dist')) abort("symfony2:parameters", "Symfony2 not exists on application");
-
-        info("symfony2:parameters","");
-        $parameters = \Spyc::YAMLDump(array('parameters' => $app->env->symfony2["parameters"]),4,60);
-        file_put_contents($app->env->releases_dir . '/app/config/parameters.yml.dist', $parameters);
+        if (!file_exists($app->env->releases_dir . '/web/app.php')) return abort("symfony2:parameters", "Symfony2 not exists on application");
+        if (!empty($app->env->symfony2["parameters"])) {
+            info("symfony2:parameters", "Write /app/config/parameters.yml");
+            $parameters = \Spyc::YAMLDump(array('parameters' => $app->env->symfony2["parameters"]),4,60);
+            file_put_contents($app->env->releases_dir . '/app/config/parameters.yml', $parameters);
+        } else {
+            warn("symfony2:parameters", "Configuration not defined for environment (/app/config/parameters.yml.dist used)");
+        }
 
     });
 
-    desc("Run Composer: update");
+    desc("Run Composer: install");
     task('composer', 'parameters', function ($app) {
 
         // Test if composer exists
@@ -47,15 +50,15 @@ group('symfony2',function () {
         else if (file_exists($app->env->releases_dir . '/composer.phar')) $composer = 'php composer.phar';
         else return abort("symfony2:install", "Install \"Composer\" the Dependency Manager for PHP");
 
-        info("symfony2:composer","composer update");
+        info("symfony2:composer","composer install");
         $cmd = array(
             "cd {$app->env->releases_dir}",
-            "{$composer} update -n"
+            "{$composer} install -n"
         );
 
         run($cmd);
     });
 
     desc("Installation of Symfony2 in environment.");
-    task('setup', 'deploy:setup', 'symfony2:download', 'symfony2:parameters', 'symfony2:composer');
+    task('setup', 'deploy:setup', 'symfony2:download', 'symfony2:composer');
 });
