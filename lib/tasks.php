@@ -18,11 +18,12 @@ group('symfony2',function () {
             $version = $app->env->symfony2["version"];
         }
 
+        // Task
         info("symfony2:download","Download Symfony2 Standard Edition : {$version}");
         $cmd = array(
-            "curl -sL https://github.com/symfony/symfony-standard/archive/{$version}.tar.gz > {$app->env->releases_dir}/symfony2.tar",
-            "tar --strip-components=1 -xzf {$app->env->releases_dir}/symfony2.tar -C {$app->env->releases_dir}",
-            "rm -f {$app->env->releases_dir}/symfony2.tar"
+            "curl -sL https://github.com/symfony/symfony-standard/archive/{$version}.tar.gz > {$app->env->deploy_to}/symfony2.tar",
+            "tar --strip-components=1 -xzf {$app->env->deploy_to}/symfony2.tar -C {$app->env->deploy_to}",
+            "rm -f {$app->env->deploy_to}/symfony2.tar"
         );
 
         run($cmd);
@@ -30,30 +31,134 @@ group('symfony2',function () {
 
     task('parameters', function ($app) {
 
-        if (!file_exists($app->env->releases_dir . '/web/app.php')) return abort("symfony2:parameters", "Symfony2 not exists on application");
+        // Define release_dir
+        if ($app->env->releases === false) $app->env->release_dir = $app->env->deploy_to;
+        else $app->env->release_dir = $app->env->current_dir;
+
+        // Test if SF2 exists
+        $sf2_exists = run("if test -f {$app->env->release_dir}/web/app.php; then echo \"ok\"; fi", true);
+        if(empty($sf2_exists)) return abort("symfony2:parameters", "{$app->env->release_dir}/web/app.php");
+
+        // Task
         if (!empty($app->env->symfony2["parameters"])) {
             info("symfony2:parameters", "Write /app/config/parameters.yml");
             $parameters = \Spyc::YAMLDump(array('parameters' => $app->env->symfony2["parameters"]),4,60);
-            file_put_contents($app->env->releases_dir . '/app/config/parameters.yml', $parameters);
+            run("echo -n \"$parameters\" >> {$app->env->release_dir}/app/config/parameters.yml");
         } else {
             warn("symfony2:parameters", "Configuration not defined for environment (/app/config/parameters.yml.dist used)");
         }
 
     });
 
-    desc("Run Composer: install");
+    desc("Run \"composer install\"");
     task('composer', 'parameters', function ($app) {
+
+        // Define release_dir
+        if ($app->env->releases === false) $app->env->release_dir = $app->env->deploy_to;
+        else $app->env->release_dir = $app->env->current_dir;
+
+        // Test if SF2 exists
+        $sf2_exists = run("if test -f {$app->env->release_dir}/web/app.php; then echo \"ok\"; fi", true);
+        if(empty($sf2_exists)) return abort("symfony2:composer", "Symfony2 not exists on application");
 
         // Test if composer exists
         $composer_exists = run("if which composer; then echo \"ok\"; fi", true);
-        if(!empty($composer_exists)) $composer = 'composer';
-        else if (file_exists($app->env->releases_dir . '/composer.phar')) $composer = 'php composer.phar';
-        else return abort("symfony2:install", "Install \"Composer\" the Dependency Manager for PHP");
+        if(empty($composer_exists)) return abort("symfony2:install", "Install \"Composer\" globally");
 
-        info("symfony2:composer","composer install");
+        // Task
+        info("symfony2:composer","composer install --optimize-autoloader");
         $cmd = array(
-            "cd {$app->env->releases_dir}",
-            "{$composer} install -n"
+            "cd {$app->env->release_dir}",
+            "composer install --optimize-autoloader -n"
+        );
+
+        run($cmd);
+    });
+
+    desc("Clear and Warmup cache");
+    task('clear', function ($app) {
+
+        if(empty($app->env->symfony2["env"])) return abort("symfony2:clear", "Symfony2 \"env\" not defined");
+
+        // Define release_dir
+        if ($app->env->releases === false) $app->env->release_dir = $app->env->deploy_to;
+        else $app->env->release_dir = $app->env->current_dir;
+
+        // Test if SF2 exists
+        $sf2_exists = run("if test -f {$app->env->release_dir}/web/app.php; then echo \"ok\"; fi", true);
+        if(empty($sf2_exists)) return abort("symfony2:clear", "Symfony2 not exists on application");
+
+        info("symfony2:clear","Clear and Warmup cache");
+        $cmd = array(
+            "cd {$app->env->release_dir}",
+            "php app/console cache:clear --no-warmup --no-debug --env={$app->env->symfony2["env"]}",
+            "php app/console cache:warmup --no-debug --env={$app->env->symfony2["env"]}"
+        );
+
+        run($cmd);
+    });
+
+    desc("Assets install");
+    task('assets', function ($app) {
+
+        if(empty($app->env->symfony2["env"])) return abort("symfony2:assets", "Symfony2 \"env\" not defined");
+
+        // Define release_dir
+        if ($app->env->releases === false) $app->env->release_dir = $app->env->deploy_to;
+        else $app->env->release_dir = $app->env->current_dir;
+
+        // Test if SF2 exists
+        $sf2_exists = run("if test -f {$app->env->release_dir}/web/app.php; then echo \"ok\"; fi", true);
+        if(empty($sf2_exists)) return abort("symfony2:assets", "Symfony2 not exists on application");
+
+        info("symfony2:assets","Assets install");
+        $cmd = array(
+            "cd {$app->env->release_dir}",
+            "php app/console assets:install web --no-debug --env={$app->env->symfony2["env"]}"
+        );
+
+        run($cmd);
+    });
+
+    desc("Assetic dump");
+    task('assetic', function ($app) {
+
+        if(empty($app->env->symfony2["env"])) return abort("symfony2:assetic", "Symfony2 \"env\" not defined");
+
+        // Define release_dir
+        if ($app->env->releases === false) $app->env->release_dir = $app->env->deploy_to;
+        else $app->env->release_dir = $app->env->current_dir;
+
+        // Test if SF2 exists
+        $sf2_exists = run("if test -f {$app->env->release_dir}/web/app.php; then echo \"ok\"; fi", true);
+        if(empty($sf2_exists)) return abort("symfony2:assetic", "Symfony2 not exists on application");
+
+        info("symfony2:assetic","Assetic dump");
+        $cmd = array(
+            "cd {$app->env->release_dir}",
+            "php app/console assetic:dump --no-debug --env={$app->env->symfony2["env"]}"
+        );
+
+        run($cmd);
+    });
+
+    desc("Doctrine migrate");
+    task('migrate', function ($app) {
+
+        if(empty($app->env->symfony2["env"])) return abort("symfony2:migrate", "Symfony2 \"env\" not defined");
+
+        // Define release_dir
+        if ($app->env->releases === false) $app->env->release_dir = $app->env->deploy_to;
+        else $app->env->release_dir = $app->env->current_dir;
+
+        // Test if SF2 exists
+        $sf2_exists = run("if test -f {$app->env->release_dir}/web/app.php; then echo \"ok\"; fi", true);
+        if(empty($sf2_exists)) return abort("symfony2:migrate", "Symfony2 not exists on application");
+
+        info("symfony2:migrate","Assetic dump");
+        $cmd = array(
+            "cd {$app->env->release_dir}",
+            "php app/console doctrine:migrations:migrate -n"
         );
 
         run($cmd);
@@ -61,4 +166,13 @@ group('symfony2',function () {
 
     desc("Installation of Symfony2 in environment.");
     task('setup', 'deploy:setup', 'symfony2:download', 'symfony2:composer');
+
+    desc("Deploy Symfony2 in environment.");
+    task('deploy', 'deploy:update','deploy:finalize', 'symfony2:composer', 'symfony2:clear', 'symfony2:assets', 'symfony2:assetic');
+
+    group('deploy',function () {
+        desc("Deploy Symfony2 in environment + Doctrine Migrate");
+        task('migrate', 'symfony2:deploy', 'symfony2:migrate');
+    });
+
 });
