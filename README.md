@@ -11,6 +11,10 @@ Requirements:
 
 - [pomander](https://github.com/tamagokun/pomander)
 
+``` bash
+$ composer require pomander/symfony2:@dev
+```
+
 Usage
 -----
 
