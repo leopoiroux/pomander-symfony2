@@ -37,6 +37,15 @@ $env->load('Symfony2');
 $env->symfony2(array(
 	'env' => 'dev',
     'version' => '2.4.0',
+    'task' => array(
+        'permissions' => true,
+        'parameters' => true,
+        'composer' => true,
+        'clear' => true,
+        'assets' => true,
+        'migrate' => false,
+        'assetic' => false
+    ),
     'parameters' => array(
         'database_driver' => 'pdo_mysql',
         'database_host' => '127.0.0.1',
@@ -73,23 +82,23 @@ Tasks
 * `vendor/bin/pom -T`
 
 ```
-config                     Create development environment configuration
-db:backup                  Perform a backup suited for merging.
-db:create                  Create database.
-db:destroy                 Wipe database.
-db:full                    Perform a full database backup.
-db:merge                   Merge a backup into environment.
-deploy:cold                First time deployment.
-deploy:setup               Setup application in environment.
-deploy:update              Update code to latest changes.
-init                       Set it up
-rollback                   Rollback to the previous release
-symfony2:assetic           Assetic dump
-symfony2:assets            Assets install
-symfony2:clear             Clear and Warmup cache
-symfony2:composer          Run "composer install"
-symfony2:deploy            Deploy Symfony2 in environment.
-symfony2:deploy:migrate    Deploy Symfony2 in environment + Doctrine Migrate
-symfony2:migrate           Doctrine migrate
-symfony2:setup             Installation of Symfony2 in environment.
+config                  Create development environment configuration
+db:backup               Perform a backup suited for merging.
+db:create               Create database.
+db:destroy              Wipe database.
+db:full                 Perform a full database backup.
+db:merge                Merge a backup into environment.
+deploy:cold             First time deployment.
+deploy:setup            Setup application in environment.
+deploy:update           Update code to latest changes.
+init                    Set it up
+rollback                Rollback to the previous release
+symfony2:assetic        Assetic dump
+symfony2:assets         Assets install
+symfony2:clear          Clear and Warmup cache
+symfony2:composer       Run "composer install"
+symfony2:deploy         Deploy Symfony2 in environment.
+symfony2:migrate        Doctrine migrate
+symfony2:permissions    Setting up Permissions
+symfony2:setup          Installation of Symfony2 in environment.
 ```
