@@ -4,12 +4,10 @@ Symfony2 tasks for use with Pomander
 This is a plugin to help fully manage your Symfony2 projects
 with the help of Pomander.
 
+[Pomander](https://github.com/tamagokun/pomander) is a light-weight flexible deployment tool for deploying web applications. This project was inspired by [Capistrano](https://github.com/capistrano/capistrano) and [Vlad the Deployer](http://rubyhitsquad.com/Vlad_the_Deployer.html), as well as being built on top of [Phake](https://github.com/jaz303/phake), a [Rake](http://rake.rubyforge.org/) clone.
+
 Install
 -------
-
-Requirements:
-
-- [pomander](https://github.com/tamagokun/pomander)
 
 ``` bash
 $ composer require pomander/symfony2:@dev
