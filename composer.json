@@ -13,7 +13,7 @@
 	],
 	"minimum-stability": "stable",
 	"require": {
-		"pomander/pomander": "*"
+		"pomander/pomander": "@stable"
 	},
 	"autoload": {
 		"psr-0": {

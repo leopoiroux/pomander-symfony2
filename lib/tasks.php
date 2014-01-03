@@ -174,11 +174,17 @@ group('symfony2',function () {
     task('setup', 'deploy:setup', 'symfony2:download', 'symfony2:composer');
 
     desc("Deploy Symfony2 in environment.");
-    task('deploy', 'deploy:update','deploy:finalize', 'symfony2:composer', 'symfony2:clear', 'symfony2:assets', 'symfony2:assetic');
+    task('deploy', 'deploy:update','deploy:finalize', 'symfony2:composer', 'symfony2:clear', 'symfony2:assets');
 
     group('deploy',function () {
         desc("Deploy Symfony2 in environment + Doctrine Migrate");
         task('migrate', 'symfony2:deploy', 'symfony2:migrate');
+
+        desc("Deploy Symfony2 in environment + Dump Assetic");
+        task('assetic', 'symfony2:deploy', 'symfony2:assetic');
+
+        desc("Deploy Symfony2 in environment + Doctrine Migrate + Dump Assetic");
+        task('assetic_migrate', 'symfony2:deploy', 'symfony2:assetic', 'symfony2:migrate');
     });
 
 });

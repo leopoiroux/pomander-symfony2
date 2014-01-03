@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "62acb6f6c121af6b54f1614ce5230e35",
+    "hash": "3c0786328c1433243d96d765bbc4763a",
     "packages": [
         {
             "name": "jaz303/phake",
@@ -174,9 +174,9 @@
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": [
-
-    ],
+    "stability-flags": {
+        "pomander/pomander": 0
+    },
     "platform": [
 
     ],
