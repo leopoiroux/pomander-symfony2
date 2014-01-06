@@ -2,7 +2,7 @@
 
 group('symfony2',function () {
 
-    task('download', function ($app) {
+    task('download', 'app', function ($app) {
 
         // This task should only be played in development
         if ($app->env->name != "development") {
@@ -29,7 +29,7 @@ group('symfony2',function () {
         run($cmd);
     });
 
-    task('parameters', function ($app) {
+    task('parameters', 'app', function ($app) {
 
         if ($app->env->symfony2['task']['parameters'] === false) {
 
@@ -65,7 +65,7 @@ group('symfony2',function () {
     });
 
     desc("Setting up Permissions");
-    task('permissions', function ($app) {
+    task('permissions', 'app', function ($app) {
 
         if ($app->env->symfony2['task']['permissions'] === false) {
 
@@ -104,7 +104,7 @@ group('symfony2',function () {
     });
 
     desc("Run \"composer install\"");
-    task('composer', 'parameters', function ($app) {
+    task('composer', 'app', 'parameters', function ($app) {
 
         if ($app->env->symfony2['task']['composer'] === false) {
 
@@ -137,7 +137,7 @@ group('symfony2',function () {
     });
 
     desc("Clear and Warmup cache");
-    task('clear', function ($app) {
+    task('clear', 'app', function ($app) {
 
         if ($app->env->symfony2['task']['clear'] === false) {
 
@@ -168,7 +168,7 @@ group('symfony2',function () {
     });
 
     desc("Assets install");
-    task('assets', function ($app) {
+    task('assets', 'app', function ($app) {
 
         if ($app->env->symfony2['task']['assets'] === false) {
 
@@ -198,7 +198,7 @@ group('symfony2',function () {
     });
 
     desc("Assetic dump");
-    task('assetic', function ($app) {
+    task('assetic', 'app', function ($app) {
 
         if ($app->env->symfony2['task']['assetic'] === false) {
 
@@ -228,7 +228,7 @@ group('symfony2',function () {
     });
 
     desc("Doctrine migrate");
-    task('migrate', function ($app) {
+    task('migrate', 'app', function ($app) {
 
         if ($app->env->symfony2['task']['migrate'] === false) {
 
