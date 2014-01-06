@@ -48,7 +48,7 @@ group('symfony2',function () {
 
             // Task
             if (!empty($app->env->symfony2["parameters"])) {
-                info("symfony2:parameters", "Write /app/config/parameters.yml");
+                info("symfony2:parameters", "Write /app/config/parameters.yml.dist");
                 $parameters = \Spyc::YAMLDump(array('parameters' => $app->env->symfony2["parameters"]),4,60);
                 $cmd = array(
                     "rm -f {$app->env->release_dir}/app/config/parameters.yml",
