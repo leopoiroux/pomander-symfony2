@@ -44,7 +44,7 @@ group('symfony2',function () {
 
             // Test if SF2 exists
             $sf2_exists = run("if test -f {$app->env->release_dir}/web/app.php; then echo \"ok\"; fi", true);
-            if(empty($sf2_exists)) return abort("symfony2:parameters", "{$app->env->release_dir}/web/app.php");
+            if(empty($sf2_exists)) return abort("symfony2:composer", "Symfony2 not exists on application");
 
             // Task
             if (!empty($app->env->symfony2["parameters"])) {
