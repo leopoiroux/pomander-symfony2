@@ -126,7 +126,7 @@ group('symfony2',function () {
             if(empty($composer_exists)) return abort("symfony2:install", "Install \"Composer\" globally");
 
             // Task
-            info("symfony2:composer","composer install --optimize-autoloader");
+            info("symfony2:composer","composer install --optimize-autoloader -n");
             $cmd = array(
                 "cd {$app->env->release_dir}",
                 "composer install --optimize-autoloader -n"
@@ -247,7 +247,7 @@ group('symfony2',function () {
             $sf2_exists = run("if test -f {$app->env->release_dir}/web/app.php; then echo \"ok\"; fi", true);
             if(empty($sf2_exists)) return abort("symfony2:migrate", "Symfony2 not exists on application");
 
-            info("symfony2:migrate","Assetic dump");
+            info("symfony2:migrate","Doctrine migrate");
             $cmd = array(
                 "cd {$app->env->release_dir}",
                 "php app/console doctrine:migrations:migrate -n"
