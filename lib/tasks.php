@@ -2,11 +2,12 @@
 
 group('symfony2',function () {
 
+
     task('download', 'app', function ($app) {
 
         // This task should only be played in development
         if ($app->env->name != "development") {
-            return abort("symfony2:download","This task should only be played in development");
+            abort("symfony2:download","This task should only be played in development");
         }
 
         // Download Symfony2 Standard Edition
@@ -44,7 +45,7 @@ group('symfony2',function () {
 
             // Test if SF2 exists
             $sf2_exists = run("if test -f {$app->env->release_dir}/web/app.php; then echo \"ok\"; fi", true);
-            if(empty($sf2_exists)) return abort("symfony2:composer", "Symfony2 not exists on application");
+            if(empty($sf2_exists)) abort("symfony2:composer", "Symfony2 not exists on application");
 
             // Task
             if (!empty($app->env->symfony2["parameters"])) {
@@ -80,14 +81,14 @@ group('symfony2',function () {
 
             // Test if SF2 exists
             $sf2_exists = run("if test -f {$app->env->release_dir}/web/app.php; then echo \"ok\"; fi", true);
-            if(empty($sf2_exists)) return abort("symfony2:composer", "Symfony2 not exists on application");
+            if(empty($sf2_exists)) abort("symfony2:composer", "Symfony2 not exists on application");
 
             // Test if setfacl exists
             $setfacl_exists = run("if which setfacl; then echo \"ok\"; fi", true);
-            if(empty($setfacl_exists)) return abort("symfony2:permissions", "Enable ACL support and install \"setfacl\"");
+            if(empty($setfacl_exists)) abort("symfony2:permissions", "Enable ACL support and install \"setfacl\"");
 
             // User
-            if(empty($app->env->user)) return abort("symfony2:permissions", "You must specify $env->user");
+            if(empty($app->env->user)) abort("symfony2:permissions", 'You must specify $env->user');
 
             // Task
             info("symfony2:permissions","app/cache app/logs");
@@ -119,11 +120,11 @@ group('symfony2',function () {
 
             // Test if SF2 exists
             $sf2_exists = run("if test -f {$app->env->release_dir}/web/app.php; then echo \"ok\"; fi", true);
-            if(empty($sf2_exists)) return abort("symfony2:composer", "Symfony2 not exists on application");
+            if(empty($sf2_exists)) abort("symfony2:composer", "Symfony2 not exists on application");
 
             // Test if composer exists
             $composer_exists = run("if which composer; then echo \"ok\"; fi", true);
-            if(empty($composer_exists)) return abort("symfony2:install", "Install \"Composer\" globally");
+            if(empty($composer_exists)) abort("symfony2:install", "Install \"Composer\" globally");
 
             // Task
             info("symfony2:composer","composer install --optimize-autoloader -n");
@@ -146,7 +147,7 @@ group('symfony2',function () {
 
         } else {
 
-            if(empty($app->env->symfony2["env"])) return abort("symfony2:clear", "Symfony2 \"env\" not defined");
+            if(empty($app->env->symfony2["env"])) abort("symfony2:clear", "Symfony2 \"env\" not defined");
 
             // Define release_dir
             if ($app->env->releases === false) $app->env->release_dir = $app->env->deploy_to;
@@ -154,7 +155,7 @@ group('symfony2',function () {
 
             // Test if SF2 exists
             $sf2_exists = run("if test -f {$app->env->release_dir}/web/app.php; then echo \"ok\"; fi", true);
-            if(empty($sf2_exists)) return abort("symfony2:clear", "Symfony2 not exists on application");
+            if(empty($sf2_exists)) abort("symfony2:clear", "Symfony2 not exists on application");
 
             info("symfony2:clear","Clear and Warmup cache");
             $cmd = array(
@@ -177,7 +178,7 @@ group('symfony2',function () {
 
         } else {
 
-            if(empty($app->env->symfony2["env"])) return abort("symfony2:assets", "Symfony2 \"env\" not defined");
+            if(empty($app->env->symfony2["env"])) abort("symfony2:assets", "Symfony2 \"env\" not defined");
 
             // Define release_dir
             if ($app->env->releases === false) $app->env->release_dir = $app->env->deploy_to;
@@ -185,7 +186,7 @@ group('symfony2',function () {
 
             // Test if SF2 exists
             $sf2_exists = run("if test -f {$app->env->release_dir}/web/app.php; then echo \"ok\"; fi", true);
-            if(empty($sf2_exists)) return abort("symfony2:assets", "Symfony2 not exists on application");
+            if(empty($sf2_exists)) abort("symfony2:assets", "Symfony2 not exists on application");
 
             info("symfony2:assets","Assets install");
             $cmd = array(
@@ -207,7 +208,7 @@ group('symfony2',function () {
 
         } else {
 
-            if(empty($app->env->symfony2["env"])) return abort("symfony2:assetic", "Symfony2 \"env\" not defined");
+            if(empty($app->env->symfony2["env"])) abort("symfony2:assetic", "Symfony2 \"env\" not defined");
 
             // Define release_dir
             if ($app->env->releases === false) $app->env->release_dir = $app->env->deploy_to;
@@ -215,7 +216,7 @@ group('symfony2',function () {
 
             // Test if SF2 exists
             $sf2_exists = run("if test -f {$app->env->release_dir}/web/app.php; then echo \"ok\"; fi", true);
-            if(empty($sf2_exists)) return abort("symfony2:assetic", "Symfony2 not exists on application");
+            if(empty($sf2_exists)) abort("symfony2:assetic", "Symfony2 not exists on application");
 
             info("symfony2:assetic","Assetic dump");
             $cmd = array(
@@ -237,7 +238,7 @@ group('symfony2',function () {
 
         } else {
 
-            if(empty($app->env->symfony2["env"])) return abort("symfony2:migrate", "Symfony2 \"env\" not defined");
+            if(empty($app->env->symfony2["env"])) abort("symfony2:migrate", "Symfony2 \"env\" not defined");
 
             // Define release_dir
             if ($app->env->releases === false) $app->env->release_dir = $app->env->deploy_to;
@@ -245,7 +246,7 @@ group('symfony2',function () {
 
             // Test if SF2 exists
             $sf2_exists = run("if test -f {$app->env->release_dir}/web/app.php; then echo \"ok\"; fi", true);
-            if(empty($sf2_exists)) return abort("symfony2:migrate", "Symfony2 not exists on application");
+            if(empty($sf2_exists)) abort("symfony2:migrate", "Symfony2 not exists on application");
 
             info("symfony2:migrate","Doctrine migrate");
             $cmd = array(
