@@ -1,7 +1,7 @@
 Symfony2 tasks for use with Pomander
 =================================================
 
-[![Latest Stable Version](https://poser.pugx.org/pomander/pomander/v/stable.png)](https://packagist.org/packages/pomander/symfony2)
+[![Latest Stable Version](https://poser.pugx.org/pomander/symfony2/v/stable.png)](https://packagist.org/packages/pomander/symfony2)
 
 This is a plugin to help fully manage your Symfony2 projects
 with the help of Pomander.
