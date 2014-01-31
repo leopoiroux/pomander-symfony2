@@ -7,16 +7,16 @@
     "packages": [
         {
             "name": "jaz303/phake",
-            "version": "v0.5.1",
+            "version": "v0.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaz303/phake.git",
-                "reference": "66f2ef4e3cf8f7fd24d3d9d65936a425e55ae637"
+                "reference": "ddfc0e71e7d65a9bfb852a8b3e1b9aad7b6b825e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaz303/phake/zipball/66f2ef4e3cf8f7fd24d3d9d65936a425e55ae637",
-                "reference": "66f2ef4e3cf8f7fd24d3d9d65936a425e55ae637",
+                "url": "https://api.github.com/repos/jaz303/phake/zipball/ddfc0e71e7d65a9bfb852a8b3e1b9aad7b6b825e",
+                "reference": "ddfc0e71e7d65a9bfb852a8b3e1b9aad7b6b825e",
                 "shasum": ""
             },
             "require": {
@@ -26,6 +26,11 @@
                 "bin/phake"
             ],
             "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "phake": "lib/"
+                }
+            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
@@ -43,7 +48,7 @@
                 "automation",
                 "cli"
             ],
-            "time": "2013-07-15 19:08:00"
+            "time": "2014-01-04 20:27:15"
         },
         {
             "name": "phpseclib/phpseclib",
@@ -121,21 +126,24 @@
         },
         {
             "name": "pomander/pomander",
-            "version": "0.3.9",
+            "version": "0.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tamagokun/pomander.git",
-                "reference": "eef136e8ca751b092a30b55a9d4a9a9bf612ed1a"
+                "reference": "8c10cd76cc60b56a9422c61c4eb0c6aa7a793604"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tamagokun/pomander/zipball/eef136e8ca751b092a30b55a9d4a9a9bf612ed1a",
-                "reference": "eef136e8ca751b092a30b55a9d4a9a9bf612ed1a",
+                "url": "https://api.github.com/repos/tamagokun/pomander/zipball/8c10cd76cc60b56a9422c61c4eb0c6aa7a793604",
+                "reference": "8c10cd76cc60b56a9422c61c4eb0c6aa7a793604",
                 "shasum": ""
             },
             "require": {
-                "jaz303/phake": "*",
-                "phpseclib/phpseclib": "*"
+                "jaz303/phake": "~0.6",
+                "phpseclib/phpseclib": "@stable"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "@stable"
             },
             "bin": [
                 "bin/pom"
@@ -164,7 +172,7 @@
                 "git",
                 "svn"
             ],
-            "time": "2013-10-22 12:40:06"
+            "time": "2014-01-29 21:26:47"
         }
     ],
     "packages-dev": [
