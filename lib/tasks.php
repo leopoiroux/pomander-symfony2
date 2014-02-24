@@ -104,7 +104,7 @@ group('symfony2',function () {
     });
 
     desc("Run \"composer install\"");
-    task('composer', 'app', 'parameters', function ($app) {
+    task('composer', 'symfony2:parameters', 'app', function ($app) {
 
         if ($app->env->symfony2['task']['composer'] === false) {
 
