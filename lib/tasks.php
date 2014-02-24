@@ -2,7 +2,6 @@
 
 group('symfony2',function () {
 
-
     task('download', 'app', function ($app) {
 
         // This task should only be played in development
@@ -127,10 +126,10 @@ group('symfony2',function () {
             if(empty($composer_exists)) abort("symfony2:install", "Install \"Composer\" globally");
 
             // Task
-            info("symfony2:composer","composer install --optimize-autoloader -n");
+            info("symfony2:composer","composer install --prefer-dist --optimize-autoloader -n");
             $cmd = array(
                 "cd {$app->env->release_dir}",
-                "composer install --optimize-autoloader -n"
+                "composer install --prefer-dist --optimize-autoloader -n"
             );
 
             run($cmd);
