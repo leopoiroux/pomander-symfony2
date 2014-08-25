@@ -250,7 +250,7 @@ group('symfony2',function () {
             info("symfony2:migrate","Doctrine migrate");
             $cmd = array(
                 "cd {$app->env->release_dir}",
-                "php app/console doctrine:migrations:migrate -n"
+                "php app/console doctrine:migrations:migrate -n --env={$app->env->symfony2["env"]}"
             );
 
             run($cmd);
